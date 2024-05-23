@@ -66,14 +66,18 @@ const Home = () => {
     }
   }
 
-  const fetchedData = async (email) => {
+  const fetchedData = async (email, token) => {
     try {
-      const response = await fetch('https://eoapi.ivistaz.co/api/eomembers', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      const response = await fetch(
+        'https://eoapi.ivistaz.co/api/eoglobal/eomembers',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
 
       if (!response.ok) {
         throw new Error('Failed to fetch data')
