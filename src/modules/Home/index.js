@@ -29,14 +29,17 @@ const Home = () => {
 
         const authData = await authResponse.json()
         setToken(authData.token)
-        console.log(token)
+        Cookies.set('token', authData.token, { expires: 1, path: '' }) // expires in 1 day
       } catch (error) {
         console.error(error.message)
       }
     }
 
-    authenticateUser()
-  }, [token])
+    // Only authenticate if the token is not already set
+    if (!token) {
+      authenticateUser()
+    }
+  }, []) // Run once on mount
 
   const onEnterEmail = (e) => {
     setEmail(e.target.value)
@@ -44,36 +47,53 @@ const Home = () => {
 
   const handleRegistration = async (e) => {
     e.preventDefault()
-    if (email.includes('@')) {
-      setValidEmail(true)
-      const isEOMember = await fetchedData(email)
-      if (!isEOMember) {
-        setValidMember(false)
-      } else {
-        setValidMember(true)
-        navigate('/otp')
-      }
-    } else {
+    if (!email.includes('@')) {
       setValidEmail(false)
+      return
+    }
+
+    setValidEmail(true)
+
+    // Ensure token is available before fetching data
+    if (!token) {
+      console.error('Token not available')
+      return
+    }
+
+    const isEOMember = await fetchedData(email, token)
+
+    if (!isEOMember) {
+      setValidMember(false)
+    } else {
+      setValidMember(true)
+      navigate('/otp')
     }
   }
 
-  const fetchedData = async (email) => {
+  const fetchedData = async (email, token) => {
     try {
-      const response = await fetch('https://eoapi.ivistaz.co/api/eomembers')
-      console.log(response)
+      const response = await fetch(
+        'https://eoapi.ivistaz.co/api/eoglobal/eomembers',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
       if (!response.ok) {
         throw new Error('Failed to fetch data')
       }
+
       const jsonData = await response.json()
-      console.log(jsonData.eomembers)
       const filteredData = jsonData.eomembers.find(
         (item) => item.email === email
       )
-      console.log(filteredData)
       return filteredData
     } catch (error) {
-      console.log(error.message)
+      console.error(error.message)
     }
   }
 
