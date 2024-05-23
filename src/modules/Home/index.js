@@ -68,22 +68,20 @@ const Home = () => {
 
   const fetchedData = async (email, token) => {
     try {
-      const response = await fetch(
-        'https://eoapi.ivistaz.co/api/eoglobal/eomembers',
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      const response = await fetch('https://eoapi.ivistaz.co/api/eomembers', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
       if (!response.ok) {
         throw new Error('Failed to fetch data')
       }
 
       const jsonData = await response.json()
+      console.log(jsonData)
       const filteredData = jsonData.eomembers.find(
         (item) => item.email === email
       )
