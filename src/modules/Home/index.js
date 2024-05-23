@@ -66,13 +66,12 @@ const Home = () => {
     }
   }
 
-  const fetchedData = async (email, token) => {
+  const fetchedData = async (email) => {
     try {
       const response = await fetch('https://eoapi.ivistaz.co/api/eomembers', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
       })
 
