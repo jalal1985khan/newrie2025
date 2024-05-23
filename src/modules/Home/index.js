@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
@@ -9,40 +9,36 @@ const Home = () => {
   const [token, setToken] = useState(Cookies.get('token') || null)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    const authenticateUser = async () => {
-      try {
-        const authResponse = await fetch('https://eoapi.ivistaz.co/api/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: 'kallol@ivistasolutions.com',
-            password: 'ivista@2023',
-          }),
-        })
-
-        if (!authResponse.ok) {
-          throw new Error('Failed to authenticate')
-        }
-
-        const authData = await authResponse.json()
-        setToken(authData.token)
-        Cookies.set('token', authData.token, { expires: 1, path: '' }) // expires in 1 day
-      } catch (error) {
-        console.error(error.message)
-      }
-    }
-
-    // Only authenticate if the token is not already set
-    if (!token) {
-      authenticateUser()
-    }
-  }, []) // Run once on mount
-
   const onEnterEmail = (e) => {
     setEmail(e.target.value)
+  }
+
+  const authenticateUser = async () => {
+    try {
+      const authResponse = await fetch('https://eoapi.ivistaz.co/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: 'kallol@ivistasolutions.com',
+          password: 'ivista@2023',
+        }),
+      })
+
+      if (!authResponse.ok) {
+        throw new Error('Failed to authenticate')
+      }
+
+      const authData = await authResponse.json()
+      setToken(authData.token)
+      console.log(token)
+      Cookies.set('token', authData.token, { expires: 1, path: '' }) // expires in 1 day
+      return authData.token
+    } catch (error) {
+      console.error(error.message)
+      return null
+    }
   }
 
   const handleRegistration = async (e) => {
@@ -54,7 +50,7 @@ const Home = () => {
 
     setValidEmail(true)
 
-    // Ensure token is available before fetching data
+    const token = await authenticateUser()
     if (!token) {
       console.error('Token not available')
       return
@@ -94,6 +90,7 @@ const Home = () => {
       return filteredData
     } catch (error) {
       console.error(error.message)
+      return null
     }
   }
 
