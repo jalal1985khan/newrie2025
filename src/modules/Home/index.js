@@ -13,33 +13,33 @@ const Home = () => {
     setEmail(e.target.value)
   }
 
-  // const authenticateUser = async () => {
-  //   try {
-  //     const authResponse = await fetch('https://eoapi.ivistaz.co/api/login', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         email: 'kallol@ivistasolutions.com',
-  //         password: 'ivista@2023',
-  //       }),
-  //     })
+  const authenticateUser = async () => {
+    try {
+      const authResponse = await fetch('https://eoapi.ivistaz.co/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: 'kallol@ivistasolutions.com',
+          password: 'ivista@2023',
+        }),
+      })
 
-  //     if (!authResponse.ok) {
-  //       throw new Error('Failed to authenticate')
-  //     }
+      if (!authResponse.ok) {
+        throw new Error('Failed to authenticate')
+      }
 
-  //     const authData = await authResponse.json()
-  //     setToken(authData.token)
-  //     console.log(token)
-  //     Cookies.set('token', authData.token, { expires: 1, path: '' }) // expires in 1 day
-  //     return authData.token
-  //   } catch (error) {
-  //     console.error(error.message)
-  //     return null
-  //   }
-  // }
+      const authData = await authResponse.json()
+      setToken(authData.token)
+      console.log(token)
+      Cookies.set('token', authData.token, { expires: 1, path: '' }) // expires in 1 day
+      return authData.token
+    } catch (error) {
+      console.error(error.message)
+      return null
+    }
+  }
 
   const handleRegistration = async (e) => {
     e.preventDefault()
@@ -50,11 +50,11 @@ const Home = () => {
 
     setValidEmail(true)
 
-    // const token = await authenticateUser()
-    // if (!token) {
-    //   console.error('Token not available')
-    //   return
-    // }
+    const token = await authenticateUser()
+    if (!token) {
+      console.error('Token not available')
+      return
+    }
 
     const isEOMember = await fetchedData(email, token)
 
@@ -98,7 +98,7 @@ const Home = () => {
     <div className="bg-[#210657] h-screen flex flex-col justify-center items-center">
       <div className="w-10/12 md:w-1/4 text-center space-y-10">
         <h2 className="text-white font-semibold text-xl">Welcome to</h2>
-        <h1 className="text-white font-semibold text-6xl">RIE 2025 -1</h1>
+        <h1 className="text-white font-semibold text-6xl">RIE 2025</h1>
         <form onSubmit={handleRegistration}>
           <input
             type="text"
