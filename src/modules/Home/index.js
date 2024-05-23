@@ -98,7 +98,7 @@ const Home = () => {
     <div className="bg-[#210657] h-screen flex flex-col justify-center items-center">
       <div className="w-10/12 md:w-1/4 text-center space-y-10">
         <h2 className="text-white font-semibold text-xl">Welcome to</h2>
-        <h1 className="text-white font-semibold text-6xl">RIE 2025</h1>
+        <h1 className="text-white font-semibold text-6xl">RIE 2025 -1</h1>
         <form onSubmit={handleRegistration}>
           <input
             type="text"
