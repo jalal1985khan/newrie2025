@@ -1,11 +1,42 @@
-import React, { useState } from 'react'
+import Cookies from 'js-cookie'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
   const [email, setEmail] = useState('')
   const [validEmail, setValidEmail] = useState(true)
   const [validMember, setValidMember] = useState(true)
+  const [token, setToken] = useState(Cookies.get('token') || null)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const authenticateUser = async () => {
+      try {
+        const authResponse = await fetch('https://eoapi.ivistaz.co/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: 'kallol@ivistasolutions.com',
+            password: 'ivista@2023',
+          }),
+        })
+
+        if (!authResponse.ok) {
+          throw new Error('Failed to authenticate')
+        }
+
+        const authData = await authResponse.json()
+        setToken(authData.token)
+        console.log(token)
+      } catch (error) {
+        console.error(error.message)
+      }
+    }
+
+    authenticateUser()
+  }, [token])
 
   const onEnterEmail = (e) => {
     setEmail(e.target.value)

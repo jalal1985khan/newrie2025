@@ -1,13 +1,34 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import BackButton from '../../components/BackButton'
-import { angleDown, question, refund, signOut } from '../../utils/icons'
+import {
+  angleDown,
+  angleUp,
+  question,
+  refund,
+  signOut,
+} from '../../utils/icons'
+import { useNavigate } from 'react-router-dom'
 
 const Dashboard = () => {
+  const [profileMenu, setProfileMenu] = useState(false)
+  const navigate = useNavigate()
+
+  const handleProfileMenu = () => {
+    setProfileMenu(!profileMenu)
+  }
+
   return (
-    <div className="lg:bg-slate-200  min-h-screen flex flex-col px-2 py-6 ">
-      <BackButton title="Dashboard" textColor="text-black" />
+    <div className="lg:bg-slate-200  min-h-screen flex flex-col p-6 ">
+      <div className="mb-4">
+        <BackButton title="Dashboard" textColor="text-black" />
+      </div>
       <div className="w-11/12 md:w-1/4 flex flex-col m-auto bg-[#FDFDFD] lg:p-4 rounded-xl">
-        <div className="flex justify-between items-center px-3 py-4 w-full bg-[#FDFDFD] border border-[#C5C5C5] rounded-xl">
+        <div
+          className="flex justify-between items-center px-3 py-4 w-full bg-[#F7F7F9] border border-[#C5C5C5] rounded-xl"
+          onClick={handleProfileMenu}
+        >
           <div className="flex items-center gap-2">
             <div className="bg-custom-gradient flex items-center justify-center rounded-full">
               <img src="/profile.png" alt="profile" className="w-8 h-8" />
@@ -15,7 +36,7 @@ const Dashboard = () => {
             <h1 className="text-lg">Narayan</h1>
           </div>
           <div>
-            <span>{angleDown}</span>
+            {profileMenu ? <span>{angleUp}</span> : <span>{angleDown}</span>}
           </div>
         </div>
 
@@ -24,11 +45,18 @@ const Dashboard = () => {
             <h2 className="text-[#FEFEFE] text-xl font-semibold">
               We are so excited!
             </h2>
-            <button className="bg-[#FEFEFE] rounded-3xl px-3 py-2 border border-[#0058FA]">
+            <button
+              className="bg-[#FEFEFE] rounded-3xl px-3 py-2 border border-[#0058FA]"
+              onClick={() => navigate('/payment-gateway')}
+            >
               Click to Register
             </button>
           </div>
-          <div className="bg-white hidden rounded-2xl p-3 absolute -bottom-14 drop-shadow-2xl w-11/12 space-y-4">
+          <div
+            className={`${
+              profileMenu ? 'block' : 'hidden'
+            } bg-white rounded-2xl p-3 absolute -bottom-14 drop-shadow-2xl w-11/12 space-y-4`}
+          >
             <div className="flex items-center gap-2">
               <div className="bg-custom-gradient flex items-center justify-center rounded-full">
                 <img src="/profile.png" alt="profile" className="w-10 h-10" />

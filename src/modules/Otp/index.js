@@ -1,8 +1,10 @@
 import React from 'react'
 import OtpInput from './OtpInput'
 import BackButton from '../../components/BackButton'
+import { useNavigate } from 'react-router-dom'
 
 const Otp = () => {
+  const navigate = useNavigate()
   return (
     <div className="bg-[#210657] min-h-screen flex flex-col p-6">
       <BackButton title="OTP Verification" textColor="text-white" />
@@ -15,7 +17,10 @@ const Otp = () => {
           <OtpInput />
         </div>
         <div className="w-full">
-          <button className="bg-[#7F56D9] w-9/12 py-3 text-white rounded">
+          <button
+            className="bg-[#7F56D9] w-9/12 py-3 text-white rounded"
+            onClick={() => navigate('/welcome')}
+          >
             Verify
           </button>
         </div>

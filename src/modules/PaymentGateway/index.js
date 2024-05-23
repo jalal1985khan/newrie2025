@@ -1,4 +1,5 @@
 import React from 'react'
+import BackButton from '../../components/BackButton'
 
 const PaymentGateway = () => {
   const renderVoucher = () => (
@@ -64,22 +65,29 @@ const PaymentGateway = () => {
   )
 
   return (
-    <div className="bg-[#F9F6FF] min-h-screen flex flex-col justify-center items-center pt-6">
-      <h1 className="text-[#3F3D56] text-2xl font-bold mb-5">Voucher</h1>
-      <div className="w-11/12 md:w-1/4 flex flex-col items-center">
-        {renderVoucher()}
-        {renderPaymentDetails()}
-        <hr className="w-full bg-indigo-700 bg-opacity-20 mt-3" />
+    <div className="bg-[#F9F6FF] min-h-screen flex flex-col">
+      <div className="mx-6 mt-6">
+        <BackButton title="" textColor="" />
       </div>
-      <h1 className="text-[#3F3D56] text-2xl font-bold my-5">Payment Method</h1>
-      <div className="w-11/12 md:w-1/4 flex flex-col items-center">
-        {renderPaymentMethod1()}
-        {renderPaymentMethod2()}
-      </div>
-      <div className="bg-white p-6 rounded-t-2xl md:rounded-2xl drop-shadow-md w-full md:w-1/4">
-        <button className="rounded-3xl bg-[#653BC0] py-2 w-full text-lg text-white">
-          Proceed to Pay
-        </button>
+      <div className="flex flex-col items-center my-auto">
+        <h1 className="text-[#3F3D56] text-2xl font-bold mb-5">Voucher</h1>
+        <div className="w-11/12 md:w-1/4 flex flex-col items-center">
+          {renderVoucher()}
+          {renderPaymentDetails()}
+          <hr className="w-full bg-indigo-700 bg-opacity-20 mt-3" />
+        </div>
+        <h1 className="text-[#3F3D56] text-2xl font-bold my-5">
+          Payment Method
+        </h1>
+        <div className="w-11/12 md:w-1/4 flex flex-col items-center">
+          {renderPaymentMethod1()}
+          {renderPaymentMethod2()}
+        </div>
+        <div className="bg-white p-6 rounded-t-2xl md:rounded-2xl drop-shadow-md w-full md:w-1/4">
+          <button className="rounded-3xl bg-[#653BC0] py-2 w-full text-lg text-white">
+            Proceed to Pay
+          </button>
+        </div>
       </div>
     </div>
   )
