@@ -1,9 +1,12 @@
 import Cookies from 'js-cookie'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import EmailForm from '../../components/OtpAuth'
+import emailjs from 'emailjs-com';
 
 const Home = () => {
   const [email, setEmail] = useState('')
+  const [generatedOtp, setGeneratedOtp] = useState('');
   const [validEmail, setValidEmail] = useState(true)
   const [validMember, setValidMember] = useState(true)
   const [token, setToken] = useState(Cookies.get('token') || null)
@@ -12,6 +15,34 @@ const Home = () => {
   const onEnterEmail = (e) => {
     setEmail(e.target.value)
   }
+
+  const onVerificationSendMail = () => {
+    const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    setGeneratedOtp(generatedOtp);
+    const templateParams = {
+      to_email: email,    // Replace with recipient email
+      subject: 'RIE 2025 Event Ticket',         // Replace with your subject
+      code: generatedOtp, // Replace with your message
+    };
+    emailjs.send(
+      'default_service',
+      'template_81ng8dr',
+      templateParams,
+      'hsxWBIOu96PDlE41t'
+    )
+    .then((result) => {
+      console.log(result.text);
+      //alert('Email sent successfully!');
+      console.log('OTP sent successfully!')
+      //navigate('/otp')
+    }, (error) => {
+      console.error(error.text);
+      alert('Failed to send email.');
+    });
+
+  }
+
+
 
   const authenticateUser = async () => {
     try {
@@ -61,8 +92,11 @@ const Home = () => {
     if (!isEOMember) {
       setValidMember(false)
     } else {
+      
       setValidMember(true)
-      navigate('/otp')
+      onVerificationSendMail()
+      console.log(email)
+      // <EmailForm email={email} />
     }
   }
 
